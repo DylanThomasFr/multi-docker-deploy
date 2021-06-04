@@ -11,9 +11,9 @@ script:
 after_success:
   # Build Docker images
   - docker build -t skyblu/multi-react ./client
-  - docker build -f skyblu/multi-nginx ./nginx
-  - docker build -f skyblu/multi-express ./server
-  - docker build -f skyblu/multi-redis ./worker
+  - docker build -t skyblu/multi-nginx ./nginx
+  - docker build -t skyblu/multi-express ./server
+  - docker build -t skyblu/multi-redis ./worker
 
   #Log in Docker hub
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
