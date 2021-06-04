@@ -1,0 +1,24 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t skyblu/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true skyblu/react-test npm test
+
+after_success:
+  # Build Docker images
+  - docker build -t skyblu/multi-react ./client
+  - docker build -f skyblu/multi-nginx ./nginx
+  - docker build -f skyblu/multi-express ./server
+  - docker build -f skyblu/multi-redis ./worker
+
+  #Log in Docker hub
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push images to Docker hub
+  - docker push skyblu/multi-react
+  - docker push skyblu/multi-nginx
+  - docker push skyblu/multi-express
+  - docker push skyblu/multi-redis
