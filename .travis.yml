@@ -22,3 +22,15 @@ after_success:
   - docker push skyblu/multi-nginx
   - docker push skyblu/multi-express
   - docker push skyblu/multi-redis
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'eu-west-2'
+  app: 'multi-docker'
+  env: 'Multidocker-env'
+  bucket_name: 'elasticbeanstalk-eu-west-2-592344454189'
+  bucket_path: 'docker-multi'
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
